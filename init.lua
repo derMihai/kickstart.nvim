@@ -312,6 +312,9 @@ vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
+-- vim.o.completeopt = 'menuone,noselect,longest'
+-- Make autocompletion in command mode to match longest prefix 
+vim.o.wildmode = 'longest:full'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
@@ -363,7 +366,13 @@ require('telescope').setup {
       },
     },
   },
+  pickers = {
+    find_files = {
+      follow = true
+    }
+  }
 }
+
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
