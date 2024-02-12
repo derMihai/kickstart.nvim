@@ -285,6 +285,9 @@ vim.o.hlsearch = false
 vim.wo.number = true
 vim.wo.relativenumber = true
 
+-- Rulers
+vim.o.cc = '80,100'
+
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
