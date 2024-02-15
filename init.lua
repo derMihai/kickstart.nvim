@@ -336,6 +336,8 @@ vim.keymap.set({'n', 'v'}, '<C-d>', '<C-d>zz')
 vim.keymap.set({'n', 'v'}, '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzz')
 vim.keymap.set('n', 'N', 'Nzz')
+vim.keymap.set('n', '[c', '[czz', { desc = 'Go to previous change' })
+vim.keymap.set('n', ']c', ']czz', { desc = 'Go to next change' })
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
