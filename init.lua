@@ -158,18 +158,22 @@ require('lazy').setup({
 
         -- Actions
         -- visual mode
-        map('v', '<leader>hs', function()
-          gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'stage git hunk' })
-        map('v', '<leader>hr', function()
-          gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'reset git hunk' })
-        -- normal mode
-        map('n', '<leader>hs', gs.stage_hunk, { desc = 'git stage hunk' })
-        map('n', '<leader>hr', gs.reset_hunk, { desc = 'git reset hunk' })
-        map('n', '<leader>hS', gs.stage_buffer, { desc = 'git Stage buffer' })
-        map('n', '<leader>hu', gs.undo_stage_hunk, { desc = 'undo stage hunk' })
-        map('n', '<leader>hR', gs.reset_buffer, { desc = 'git Reset buffer' })
+        --
+        -- I disabled these because I am still sloppy with vim and they can mess 
+        -- up my work
+        -- 
+        -- map('v', '<leader>hs', function()
+        --   gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        -- end, { desc = 'stage git hunk' })
+        -- map('v', '<leader>hr', function()
+        --   gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        -- end, { desc = 'reset git hunk' })
+        -- -- normal mode
+        -- map('n', '<leader>hs', gs.stage_hunk, { desc = 'git stage hunk' })
+        -- map('n', '<leader>hr', gs.reset_hunk, { desc = 'git reset hunk' })
+        -- map('n', '<leader>hS', gs.stage_buffer, { desc = 'git Stage buffer' })
+        -- map('n', '<leader>hu', gs.undo_stage_hunk, { desc = 'undo stage hunk' })
+        -- map('n', '<leader>hR', gs.reset_buffer, { desc = 'git Reset buffer' })
         map('n', '<leader>hp', gs.preview_hunk, { desc = 'preview git hunk' })
         map('n', '<leader>hb', function()
           gs.blame_line { full = false }
@@ -197,7 +201,7 @@ require('lazy').setup({
     config = function()
       require('onedark').setup {
         -- Set a style preset. 'dark' is default.
-        style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
+        style = 'light', -- dark, darker, cool, deep, warm, warmer, light
       }
       require('onedark').load()
     end,
@@ -279,7 +283,7 @@ require('lazy').setup({
 -- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -339,6 +343,16 @@ vim.keymap.set('n', 'N', 'Nzz')
 vim.keymap.set('n', '[c', '[czz', { desc = 'Go to previous change' })
 vim.keymap.set('n', ']c', ']czz', { desc = 'Go to next change' })
 
+-- enable/disable spellcheck
+vim.keymap.set('n', '<leader>ls',
+  function()
+    vim.api.nvim_command('set spell')
+  end, { desc = '[S]pell' })
+vim.keymap.set('n', '<leader>ln',
+  function()
+    vim.api.nvim_command('set nospell')
+  end, { desc = '[N]ospell' })
+
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -371,6 +385,7 @@ require('telescope').setup {
       },
     },
   },
+  -- follow symlinks
   pickers = {
     find_files = {
       follow = true
