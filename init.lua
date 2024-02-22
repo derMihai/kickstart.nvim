@@ -159,9 +159,9 @@ require('lazy').setup({
         -- Actions
         -- visual mode
         --
-        -- I disabled these because I am still sloppy with vim and they can mess 
+        -- I disabled these because I am still sloppy with vim and they can mess
         -- up my work
-        -- 
+        --
         -- map('v', '<leader>hs', function()
         --   gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
         -- end, { desc = 'stage git hunk' })
@@ -320,7 +320,7 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 -- vim.o.completeopt = 'menuone,noselect,longest'
--- Make autocompletion in command mode to match longest prefix 
+-- Make autocompletion in command mode to match longest prefix
 vim.o.wildmode = 'longest:full'
 
 -- NOTE: You should make sure your terminal supports this
@@ -329,13 +329,23 @@ vim.o.termguicolors = true
 vim.api.nvim_command("autocmd TermOpen * setlocal nonumber")
 vim.api.nvim_command("autocmd TermOpen * setlocal norelativenumber")
 
+-- remove trailing whitespaces
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+    pattern = {"*.c", "*.h", "*.py", "*.sh", "*.rs", "*.cpp", "*.lua", "Makefile*"},
+    callback = function()
+        local save_cursor = vim.fn.getpos(".")
+        vim.cmd([[%s/\s\+$//e]])
+        vim.fn.setpos(".", save_cursor)
+    end,
+})
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
--- auto-center when jumping 
+-- auto-center when jumping
 vim.keymap.set({'n', 'v'}, '<C-d>', '<C-d>zz')
 vim.keymap.set({'n', 'v'}, '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzz')
