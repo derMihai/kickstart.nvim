@@ -44,6 +44,9 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- vim.o.sessionoptions = vim.o.sessionoptions .. ",options,localoptions"
+-- vim.o.sessionoptions = "blank,curdir,terminal,globals"
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -68,6 +71,8 @@ vim.opt.rtp:prepend(lazypath)
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
+
+  'github/copilot.vim',
 
   -- Git related plugins
   'tpope/vim-fugitive',
@@ -352,6 +357,8 @@ vim.keymap.set('n', 'n', 'nzz')
 vim.keymap.set('n', 'N', 'Nzz')
 vim.keymap.set('n', '[c', '[czz', { desc = 'Go to previous change' })
 vim.keymap.set('n', ']c', ']czz', { desc = 'Go to next change' })
+vim.keymap.set('n', 'gd', 'gdzz')
+vim.keymap.set('n', 'gD', 'gDzz')
 
 -- enable/disable spellcheck
 vim.keymap.set('n', '<leader>ls',
