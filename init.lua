@@ -640,7 +640,7 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   clangd = {
-    cmd = { "clangd", "--header-insertion=never", }
+    cmd = { "clangd", "--header-insertion=never", "--offset-encoding=utf-16" }
   },
   -- gopls = {},
   -- pyright = {},
