@@ -72,7 +72,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
-  'github/copilot.vim',
 
   -- Git related plugins
   'tpope/vim-fugitive',
@@ -80,6 +79,14 @@ require('lazy').setup({
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+  {
+    'github/copilot.vim',
+    config = function()
+      vim.api.nvim_command('Copilot disable')
+    end,
+
+  },
+
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -336,7 +343,7 @@ vim.api.nvim_command("autocmd TermOpen * setlocal norelativenumber")
 
 -- remove trailing whitespaces
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  pattern = {"*.c", "*.h", "*.py", "*.sh", "*.rs", "*.cpp", "*.lua", "Makefile*"},
+  pattern = {"*.c", "*.h", "*.py", "*.sh", "*.rs", "*.cpp", "*.lua", "Makefile*, *.rst"},
   callback = function()
     local save_cursor = vim.fn.getpos(".")
     vim.cmd([[%s/\s\+$//e]])
@@ -639,13 +646,25 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
+  -- esbonio = {}, -- sphinx
   bashls = {},
   clangd = {
     cmd = { "clangd", "--header-insertion=never", "--offset-encoding=utf-16" }
   },
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
   rust_analyzer = {},
+  -- rust_analyzer = {
+  --   ["rust-analyzer"] = {
+  --     cargo = {
+  --       buildScripts = {
+  --         overrideCommand = "cargo check --quiet --workspace --message-format=json --all-targets --bins",
+  --         invocationLocation = "root",
+  --         invocationStrategy = "once",
+  --       },
+  --     },
+  --   },
+  -- },
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -693,6 +712,11 @@ require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
 cmp.setup {
+  -- performance = {
+  --    debounce = 500,
+  --    throttle = 550,
+  --    fetching_timeout = 80,
+  -- },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
