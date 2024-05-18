@@ -647,6 +647,8 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   -- esbonio = {}, -- sphinx
+  texlab = {},
+  -- ltex = {},
   bashls = {},
   clangd = {
     cmd = { "clangd", "--header-insertion=never", "--offset-encoding=utf-16" }
@@ -699,7 +701,7 @@ mason_lspconfig.setup_handlers {
       on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
-      cmd = servers[server_name].cmd,
+      cmd = (servers[server_name] or {}).cmd,
     }
   end,
 }
