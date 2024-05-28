@@ -211,6 +211,7 @@ require('lazy').setup({
     priority = 1000,
     lazy = false,
     config = function()
+      vim.opt.background = "light"
       require('onedark').setup {
         -- Set a style preset. 'dark' is default.
         style = 'light', -- dark, darker, cool, deep, warm, warmer, light
