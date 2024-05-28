@@ -81,10 +81,7 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   {
     'github/copilot.vim',
-    config = function()
-      vim.api.nvim_command('Copilot disable')
-    end,
-
+    cmd = 'Copilot', -- start only on `Copilot` command
   },
 
 
