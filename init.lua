@@ -649,7 +649,10 @@ local servers = {
   -- ltex = {},
   bashls = {},
   clangd = {
-    cmd = { "clangd", "--header-insertion=never", "--offset-encoding=utf-16" }
+    cmd = { "clangd", "--header-insertion=never", -- do not auto-insert missing headers
+      "--offset-encoding=utf-16", -- fix some warning
+      "--compile-commands-dir=" .. vim.fn.getcwd() -- look only in the project folder, sometimes it gets confused
+    }
   },
   -- gopls = {},
   pyright = {},
