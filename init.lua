@@ -71,7 +71,7 @@ vim.opt.rtp:prepend(lazypath)
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
-
+  'lervag/vimtex',
 
   -- Git related plugins
   'tpope/vim-fugitive',
@@ -82,6 +82,13 @@ require('lazy').setup({
   {
     'github/copilot.vim',
     cmd = 'Copilot', -- start only on `Copilot` command
+    config = function ()
+        vim.keymap.set('i', '<C-E>', 'copilot#Accept("\\<CR>")', {
+          expr = true,
+          replace_keycodes = false
+        })
+        vim.g.copilot_no_tab_map = true
+    end,
   },
 
 
