@@ -216,6 +216,7 @@ require('lazy').setup({
     lazy = false,
     config = function()
       vim.opt.background = "light"
+      -- vim.opt.background = "dark"
       require('onedark').setup {
         -- Set a style preset. 'dark' is default.
         style = 'light', -- dark, darker, cool, deep, warm, warmer, light
@@ -412,6 +413,9 @@ require('telescope').setup {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
       },
+      n = {
+        ['<c-e>'] = require('telescope.actions').delete_buffer
+      },
     },
   },
   -- follow symlinks
@@ -505,7 +509,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'proto' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -651,7 +655,7 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- esbonio = {}, -- sphinx
+  esbonio = {}, -- sphinx
   texlab = {},
   -- ltex = {},
   bashls = {},
@@ -659,7 +663,8 @@ local servers = {
     cmd = { "clangd", "--header-insertion=never", -- do not auto-insert missing headers
       "--offset-encoding=utf-16", -- fix some warning
       "--compile-commands-dir=" .. vim.fn.getcwd() -- look only in the project folder, sometimes it gets confused
-    }
+    },
+    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" }, -- exclude "proto".
   },
   -- gopls = {},
   pyright = {},
