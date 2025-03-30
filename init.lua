@@ -390,8 +390,6 @@ vim.keymap.set('n', 'n', 'nzz')
 vim.keymap.set('n', 'N', 'Nzz')
 vim.keymap.set('n', '[c', '[czz', { desc = 'Go to previous change' })
 vim.keymap.set('n', ']c', ']czz', { desc = 'Go to next change' })
-vim.keymap.set('n', 'gd', 'gdzz')
-vim.keymap.set('n', 'gD', 'gDzz')
 
 -- enable/disable spellcheck
 vim.keymap.set('n', '<leader>ls',
@@ -539,7 +537,6 @@ local on_attach = function(_, bufnr)
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
   nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
   nmap('<leader>wl', function()
