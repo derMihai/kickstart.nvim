@@ -270,7 +270,8 @@ require('lazy').setup({
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
         enabled = true,
-      }
+        win = { preview = { wo = { number = false, relativenumber = false }}}
+      },
     },
     keys  = {
       { "<leader>sf",      function() Snacks.picker.files() end,                              desc = '[s]earch [f]ile ' },
@@ -366,6 +367,9 @@ vim.o.termguicolors = true
 
 vim.api.nvim_command("autocmd TermOpen * setlocal nonumber")
 vim.api.nvim_command("autocmd TermOpen * setlocal norelativenumber")
+-- workaround buffers picker enabling lines in all views
+vim.api.nvim_command("autocmd TermEnter * setlocal nonumber")
+vim.api.nvim_command("autocmd TermEnter * setlocal norelativenumber")
 
 -- remove trailing whitespaces
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
