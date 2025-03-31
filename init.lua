@@ -261,6 +261,8 @@ require('lazy').setup({
   -- snacks.picker replaces telescope
   {
     "folke/snacks.nvim",
+    -- "dpetka2001/snacks.nvim",
+    -- branch = "fix/preview_hack_win_opts",
     priority = 1000,
     lazy     = false,
     ---@type snacks.Config
