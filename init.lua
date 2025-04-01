@@ -195,16 +195,47 @@ require('lazy').setup({
           return '<Ignore>'
         end, { expr = true, desc = 'Jump to previous hunk' })
 
+        local function opendiff(picker, item, match_expr)
+              picker:norm(function()
+                if item then
+                  picker:close()
+                  local commit = item.text:match(match_expr)
+                  -- print(commit)
+                  if commit then
+                    gs.diffthis(commit)
+                  end
+                end
+              end)
+        end
+
         -- Actions
         -- visual mode
         map('n', '<leader>hp', gs.preview_hunk, { desc = 'preview git hunk' })
-        map('n', '<leader>hb', function()
+        map('n', '<leader>hB', function()
           gs.blame_line { full = false }
-        end, { desc = 'git blame line' })
+        end, { desc = 'git [B]lame line' })
         map('n', '<leader>hd', gs.diffthis, { desc = 'git diff against index' })
         map('n', '<leader>hD', function()
           gs.diffthis '~'
         end, { desc = 'git diff against last commit' })
+        map('n', '<leader>hc', function()
+          require('snacks.picker').git_log({
+            confirm = function(picker, item)
+              picker:norm(function()
+                opendiff(picker, item, "^(%S+)")
+              end)
+            end
+          })
+        end, { desc = 'git diff against [c]ommit' })
+        map('n', '<leader>hb', function()
+          require('snacks.picker').git_branches({
+            confirm = function(picker, item)
+              picker:norm(function()
+                opendiff(picker, item, "%S+%s+(%S+)")
+              end)
+            end
+          })
+        end, { desc = 'git diff against [b]ranch' })
 
         -- Toggles
         map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = 'toggle git blame line' })
