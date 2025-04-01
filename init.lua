@@ -272,7 +272,8 @@ require('lazy').setup({
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
         enabled = true,
-        win = { preview = { wo = { number = false, relativenumber = false }}}
+        win = { preview = { wo = { number = false, relativenumber = false }}},
+        prompt = " > ",
       },
     },
     keys  = {
