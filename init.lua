@@ -196,20 +196,20 @@ require('lazy').setup({
         end, { expr = true, desc = 'Jump to previous hunk' })
 
         local function opendiff(picker, item, match_expr)
-              picker:norm(function()
-                if item then
-                  picker:close()
-                  local commit = item.text:match(match_expr)
-                  -- print(commit)
-                  if commit then
-                    gs.diffthis(commit)
-                  end
-                end
-              end)
+          picker:norm(function()
+            if item then
+              picker:close()
+              local commit = item.text:match(match_expr)
+              -- print(commit)
+              if commit then
+                gs.diffthis(commit)
+              end
+            end
+          end)
         end
 
         -- Actions
-        -- visual mode
+        -- normal mode
         map('n', '<leader>hp', gs.preview_hunk, { desc = 'preview git hunk' })
         map('n', '<leader>hB', function()
           gs.blame_line { full = false }
@@ -221,25 +221,17 @@ require('lazy').setup({
         map('n', '<leader>hc', function()
           require('snacks.picker').git_log({
             confirm = function(picker, item)
-              picker:norm(function()
-                opendiff(picker, item, "^(%S+)")
-              end)
+              opendiff(picker, item, "^(%S+)")
             end
           })
         end, { desc = 'git diff against [c]ommit' })
         map('n', '<leader>hb', function()
           require('snacks.picker').git_branches({
             confirm = function(picker, item)
-              picker:norm(function()
-                opendiff(picker, item, "%S+%s+(%S+)")
-              end)
+              opendiff(picker, item, "%S+%s+(%S+)")
             end
           })
         end, { desc = 'git diff against [b]ranch' })
-
-        -- Toggles
-        map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = 'toggle git blame line' })
-        map('n', '<leader>td', gs.toggle_deleted, { desc = 'toggle git show deleted' })
 
         -- Text object
         map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'select git hunk' })
@@ -449,9 +441,11 @@ vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count =  1 }) end, { 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
--- Multiline diagnostics (v0.11), pretty neat!
 vim.diagnostic.config({
-  virtual_lines = true,
+  -- Multiline diagnostics (v0.11), pretty neat, but annoying if the LSP is confused
+  -- virtual_lines = true,
+  -- Inline diagnostics
+  -- virtual_text = true,
 })
 
 -- [[ Highlight on yank ]]
@@ -605,7 +599,7 @@ require('which-key').add {
   { "<leader>t_", hidden = true },
   { "<leader>w",  group = "[W]orkspace" },
   { "<leader>w_", hidden = true },
-  { "<leader>l",  group = "[l]anguage spelling" },
+  { "<leader>l",  group = "spe[l]ling" },
   { "<leader>l_", hidden = true },
 }
 -- register which-key VISUAL mode
