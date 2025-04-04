@@ -288,8 +288,11 @@ require('lazy').setup({
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
         enabled = true,
-        win = { preview = { wo = { number = false, relativenumber = false }}},
+        win = {
+          preview = { wo = { number = false, relativenumber = false }},
+        },
         prompt = " > ",
+        icons = { files = { enabled = false } },
       },
     },
     keys  = {
@@ -539,9 +542,7 @@ local on_attach = function(_, bufnr)
       desc = 'LSP: ' .. desc
     end
 
-    if options == nil then
-      options = {}
-    end
+    options = options or {}
 
     options.buffer = bufnr
     options.desc = desc
