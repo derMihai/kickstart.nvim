@@ -303,13 +303,6 @@ require('lazy').setup({
       { '<leader>sr',      function() Snacks.picker.resume() end,                             desc = '[s]earch [r]esume' },
       { '<leader><space>', function() Snacks.picker.buffers() end,                            desc = '[ ] Find existing buffers' },
       { '<leader>sP',     function() Snacks.picker.pickers() end,                            desc = '[s]earch [p]ickers' },
-      -- LSP
-      { '<leader>ss',      function() Snacks.picker.lsp_workspace_symbols() end,              desc = '[s]earch workspace [s]ymbols' },
-      { "gd",              function() Snacks.picker.lsp_definitions() end,                    desc = "[g]oto [d]efinition" },
-      { "gD",              function() Snacks.picker.lsp_declarations() end,                   desc = "[g]oto [D]eclaration" },
-      { "gr",              function() Snacks.picker.lsp_references() end,                     nowait = true,                          desc = "[r]eferences" },
-      { "gI",              function() Snacks.picker.lsp_implementations() end,                desc = "[g]oto [I]mplementation" },
-      { "gy",              function() Snacks.picker.lsp_type_definitions() end,               desc = "[g]oto T[y]pe Definition" }
     }
   },
   {
@@ -540,33 +533,44 @@ end, 0)
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don't have to repeat yourself
-  -- many times.
-  --
-  -- In this case, we create a function that lets us more easily define mappings specific
-  -- for LSP related items. It sets the mode, buffer and description for us each time.
-  local nmap = function(keys, func, desc)
+  -- map buffer-local LSP
+  local nmap = function(keys, func, desc, options)
     if desc then
       desc = 'LSP: ' .. desc
     end
 
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+    if options == nil then
+      options = {}
+    end
+
+    options.buffer = bufnr
+    options.desc = desc
+
+    vim.keymap.set('n', keys, func, options)
   end
 
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  local picker = require('snacks').picker;
+
+  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame', {})
+  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', {})
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation', {})
 
   -- Lesser used LSP functionality
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, '[W]orkspace [L]ist Folders')
+  -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder', {})
+  -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder', {})
+  -- nmap('<leader>wl', function()
+  --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  -- end, '[W]orkspace [L]ist Folders', {})
+
+  nmap('<leader>ss', picker.lsp_workspace_symbols, '[s]earch workspace [s]ymbols', {})
+  nmap("gd", picker.lsp_definitions, "[g]oto [d]efinition", {})
+  nmap("gD", picker.lsp_declarations, "[g]oto [D]eclaration", {})
+  nmap("gr", picker.lsp_references, "[g]oto [r]eferences", { nowait = true })
+  nmap("gI", picker.lsp_implementations, "[g]oto [I]mplementation", {})
+  nmap("gy", picker.lsp_type_definitions, "[g]oto T[y]pe Definition", {})
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
