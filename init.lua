@@ -100,13 +100,13 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   {
     'github/copilot.vim',
-    cmd = 'Copilot', -- start only on `Copilot` command
     config = function ()
         vim.keymap.set('i', '<C-E>', 'copilot#Accept("\\<CR>")', {
           expr = true,
           replace_keycodes = false
         })
         vim.g.copilot_no_tab_map = true
+        vim.api.nvim_command("Copilot disable")
     end,
   },
 
