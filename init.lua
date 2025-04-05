@@ -109,7 +109,17 @@ require('lazy').setup({
         vim.api.nvim_command("Copilot disable")
     end,
   },
-
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {
+      -- See Configuration section for options
+    },
+  },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -581,8 +591,10 @@ end
 
 -- document existing key chains
 require('which-key').add {
-  { "<leader>c",  group = "[C]ode" },
+  { "<leader>c",  group = "[c]ode" },
   { "<leader>c_", hidden = true },
+  { "<leader>C",  group = "[C]opilot" },
+  { "<leader>C_", hidden = true },
   { "<leader>d",  group = "[D]ocument" },
   { "<leader>d_", hidden = true },
   { "<leader>g",  group = "[G]it" },
@@ -595,8 +607,6 @@ require('which-key').add {
   { "<leader>s_", hidden = true },
   { "<leader>t",  group = "[T]oggle" },
   { "<leader>t_", hidden = true },
-  { "<leader>w",  group = "[W]orkspace" },
-  { "<leader>w_", hidden = true },
   { "<leader>l",  group = "spe[l]ling" },
   { "<leader>l_", hidden = true },
 }
@@ -745,6 +755,10 @@ cmp.setup {
     { name = 'path' },
   },
 }
+
+vim.keymap.set({'n', 'v'}, "<leader>Cp", function()
+  vim.api.nvim_command("CopilotChatPrompts")
+end, { desc = "chat [p]rompts"})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
