@@ -108,6 +108,11 @@ require('lazy').setup({
         vim.g.copilot_no_tab_map = true
         vim.api.nvim_command("Copilot disable")
     end,
+    event = "VeryLazy",
+    keys = {
+      { "<leader>Ce", "<cmd>Copilot enable<cr>", desc = "Copilot [e]nable" },
+      { "<leader>Cd", "<cmd>Copilot disable<cr>", desc = "Copilot [d]isable" },
+    }
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
@@ -119,6 +124,10 @@ require('lazy').setup({
     opts = {
       -- See Configuration section for options
     },
+    event = "VeryLazy",
+    keys = {
+      { "<leader>Cp", "<cmd>CopilotChatPrompts<cr>", desc = "chat [p]rompts", mode = {'n', 'v'} },
+    }
   },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
@@ -759,10 +768,6 @@ cmp.setup {
     { name = 'path' },
   },
 }
-
-vim.keymap.set({'n', 'v'}, "<leader>Cp", function()
-  vim.api.nvim_command("CopilotChatPrompts")
-end, { desc = "chat [p]rompts"})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
