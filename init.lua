@@ -253,6 +253,10 @@ require('lazy').setup({
       require('onedark').setup {
         -- Set a style preset. 'dark' is default.
         style = 'light', -- dark, darker, cool, deep, warm, warmer, light
+        colors = {
+          bg0 = "#ffffff",
+          bg1 = "#f8f8f8",
+        },
       }
       require('onedark').load()
     end,
