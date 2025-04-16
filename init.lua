@@ -127,6 +127,7 @@ require('lazy').setup({
     event = "VeryLazy",
     keys = {
       { "<leader>Cp", "<cmd>CopilotChatPrompts<cr>", desc = "chat [p]rompts", mode = {'n', 'v'} },
+      { "<leader>Cc", "<cmd>CopilotChat<cr>", desc = "[c]hat", mode = {'n', 'v'} },
     }
   },
 
@@ -316,6 +317,7 @@ require('lazy').setup({
         },
         prompt = " > ",
         icons = { files = { enabled = false } },
+        formatters = { file = { truncate = 80 }},
       },
     },
     keys  = {
