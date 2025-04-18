@@ -318,6 +318,10 @@ require('lazy').setup({
         prompt = " > ",
         icons = { files = { enabled = false } },
         formatters = { file = { truncate = 80 }},
+        main = {
+          -- allow opening a buffer in a window currently occupied by terminal
+          file = false,
+        },
       },
     },
     keys  = {
