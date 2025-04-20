@@ -582,7 +582,11 @@ local on_attach = function(_, bufnr)
   local picker = require('snacks').picker;
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame', {})
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', {})
+
+  nmap('<leader>ca', vim.lsp.buf.code_action, 'code [a]ction', {})
+  nmap('<leader>ci', function() vim.diagnostic.config({ virtual_lines = false, virtual_text = true }) end, '[i]nline diagnostics', {})
+  nmap('<leader>cm', function() vim.diagnostic.config({ virtual_lines = true, virtual_text = false }) end, '[m]ultiline diagnostics', {})
+  nmap('<leader>cd', function() vim.diagnostic.config({ virtual_lines = false, virtual_text = false }) end, '[d]isable diagnostics', {})
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
