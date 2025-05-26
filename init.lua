@@ -694,6 +694,15 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
+  typos_lsp = {},
+}
+
+local servers_init_options = {
+  typos_lsp = {
+        -- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
+        -- Defaults to error.
+        diagnosticSeverity = "Hint"
+  }
 }
 
 -- Setup neovim lua configuration
@@ -718,6 +727,7 @@ mason_lspconfig.setup_handlers {
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
       cmd = (servers[server_name] or {}).cmd,
+      init_options = servers_init_options[server_name],
     }
   end,
 }
