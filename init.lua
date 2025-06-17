@@ -242,7 +242,8 @@ require('lazy').setup({
           require('snacks.picker').git_branches({
             confirm = function(picker, item)
               opendiff(picker, item, "%S+%s+(%S+)")
-            end
+            end,
+            all = true,
           })
         end, { desc = 'git diff against [b]ranch' })
 
