@@ -336,8 +336,8 @@ require('lazy').setup({
       { '<leader>sr',      function() Snacks.picker.resume() end,                             desc = '[s]earch [r]esume' },
       { '<leader><space>', function() Snacks.picker.buffers() end,                            desc = '[ ] Find existing buffers' },
       { '<leader>sP',     function() Snacks.picker.pickers() end,                            desc = '[s]earch [p]ickers' },
-      -- { "<leader>/",      function() Snacks.picker.lines( { layout = { preset = "select" } }) end, desc = "fuzzy [/]" },
-      { "<leader>/",      function() Snacks.picker.lines() end, desc = "fuzzy [/]" },
+      -- { "<leader>/",      function() Snacks.picker.lines( { layout = { preset = "select", preview = "preview" } }) end, desc = "fuzzy [/]" },
+      { "<leader>/",      function() Snacks.picker.lines( { layout = { preset = "vscode", preview = "preview" } }) end, desc = "fuzzy [/]" },
     }
   },
   {
