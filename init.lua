@@ -643,10 +643,6 @@ require('which-key').add({
   { "<leader>h", desc = "Git [H]unk",       mode = "v" },
 })
 
--- mason-lspconfig requires that these setup functions are called in this order
--- before setting up the servers.
-require('mason').setup()
-require('mason-lspconfig').setup()
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -656,40 +652,37 @@ require('mason-lspconfig').setup()
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
-local servers = {
-  -- esbonio = {}, -- sphinx
-  texlab = {
-    filetypes = {"tex", "bib"}
-  },
-  ltex = {
-    filetypes = {"tex", "bib"}
-  },
-  bashls = {},
-  clangd = {
-    cmd = { "clangd", "--header-insertion=never", -- do not auto-insert missing headers
-      "--offset-encoding=utf-16", -- fix some warning
-      "--compile-commands-dir=" .. vim.fn.getcwd() -- look only in the project folder, sometimes it gets confused
-    },
-    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" }, -- exclude "proto".
-  },
-  -- gopls = {},
-  pyright = {},
-  rust_analyzer = {},
-  -- rust_analyzer = {
-  --   ["rust-analyzer"] = {
-  --     cargo = {
-  --       buildScripts = {
-  --         overrideCommand = "cargo check --quiet --workspace --message-format=json --all-targets --bins",
-  --         invocationLocation = "root",
-  --         invocationStrategy = "once",
-  --       },
-  --     },
-  --   },
-  -- },
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+vim.lsp.config('texlab', {
+  filetypes = {"tex", "bib"},
+  on_attach = on_attach,
+})
 
-  lua_ls = {
+vim.lsp.config('ltex', {
+  filetypes = {"tex", "bib"},
+  on_attach = on_attach,
+})
+
+vim.lsp.config('bashls', {
+  on_attach = on_attach,
+})
+
+vim.lsp.config('clangd', {
+  cmd = { "clangd", "--header-insertion=never", -- do not auto-insert missing headers
+    "--offset-encoding=utf-16", -- fix some warning
+    "--compile-commands-dir=" .. vim.fn.getcwd() -- look only in the project folder, sometimes it gets confused
+  },
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda" }, -- exclude "proto".
+  on_attach = on_attach,
+})
+
+vim.lsp.config('pyright', {
+  on_attach = on_attach,
+})
+vim.lsp.config('rust_analyzer', {
+  on_attach = on_attach,
+})
+vim.lsp.config('lua_ls', {
+  settings = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
@@ -697,16 +690,24 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
-  typos_lsp = {},
-}
+  on_attach = on_attach,
+})
+vim.lsp.config('typos_lsp', {
+  init_options = {
+    -- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
+    -- Defaults to error.
+    diagnosticSeverity = "Hint"
+  },
+  on_attach = on_attach,
+})
 
-local servers_init_options = {
-  typos_lsp = {
-        -- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
-        -- Defaults to error.
-        diagnosticSeverity = "Hint"
-  }
-}
+-- I think these should happen in this order and after vim.lsp.config()
+require('mason').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    'texlab', 'ltex', 'bashls', 'clangd', 'pyright', 'rust_analyzer', 'lua_ls',
+    'typos_lsp' }
+})
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -714,26 +715,6 @@ require('neodev').setup()
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
-
-mason_lspconfig.setup {
-  ensure_installed = vim.tbl_keys(servers),
-}
-
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-      cmd = (servers[server_name] or {}).cmd,
-      init_options = servers_init_options[server_name],
-    }
-  end,
-}
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
