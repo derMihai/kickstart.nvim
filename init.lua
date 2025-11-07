@@ -635,6 +635,16 @@ vim.lsp.config('typos_lsp', {
   on_attach = on_attach,
 })
 
+vim.lsp.config("commit-lsp", {
+    cmd = { "commit-lsp", "run" },
+    root_markers = { '.git' },
+    filetypes = { "gitcommit" }
+})
+
+if vim.fn.executable("commit-lsp") == 1 then
+    vim.lsp.enable("commit-lsp")
+end
+
 -- I think these should happen in this order and after vim.lsp.config()
 require('mason').setup()
 require('mason-lspconfig').setup({
