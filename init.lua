@@ -603,7 +603,8 @@ vim.lsp.config('bashls', {
 vim.lsp.config('clangd', {
   cmd = { "clangd", "--header-insertion=never", -- do not auto-insert missing headers
     "--offset-encoding=utf-16", -- fix some warning
-    "--compile-commands-dir=" .. vim.fn.getcwd() -- look only in the project folder, sometimes it gets confused
+    -- e.g. for RIOT, we need to fix only one compilation database
+    vim.env.FIX_COMPILE_COMMANDS_DIR,
   },
   filetypes = { "c", "cpp", "objc", "objcpp", "cuda" }, -- exclude "proto".
   on_attach = on_attach,
