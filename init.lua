@@ -613,9 +613,18 @@ vim.lsp.config('clangd', {
 vim.lsp.config('pyright', {
   on_attach = on_attach,
 })
+
 vim.lsp.config('rust_analyzer', {
   on_attach = on_attach,
+  cmd = { "rust-analyzer" },
+  settings = {
+    ['rust-analyzer'] = {
+      diagnostics = { enable = true },
+      check = { command = 'clippy' },
+    }
+  },
 })
+
 vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
@@ -646,12 +655,15 @@ if vim.fn.executable("commit-lsp") == 1 then
     vim.lsp.enable("commit-lsp")
 end
 
+if vim.fn.executable("rust-analyzer") == 1 then
+    vim.lsp.enable("rust_analyzer")
+end
+
 -- I think these should happen in this order and after vim.lsp.config()
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
-    'texlab', 'ltex', 'bashls', 'clangd', 'pyright', 'rust_analyzer', 'lua_ls',
-    'typos_lsp' }
+    'texlab', 'ltex', 'bashls', 'clangd', 'pyright', 'lua_ls', 'typos_lsp' }
 })
 
 -- Setup neovim lua configuration
