@@ -86,6 +86,38 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local function set_colors(mode)
+  vim.opt.background = mode
+  local colors
+  if mode == 'light' then
+    colors = {
+      bg0 = "#ffffff",
+      bg1 = "#f8f8f8",
+    }
+  else
+    colors = {
+      bg0 = "#000000",
+      bg1 = "#101010",
+    }
+  end
+
+  require('onedark').setup {
+    -- Set a style preset. 'dark' is default.
+    -- style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
+    -- style = 'light', -- dark, darker, cool, deep, warm, warmer, light
+    style = mode,
+    colors = colors,
+  }
+  require('onedark').load()
+end
+
+local last_color = 1;
+local function toggle_colors()
+  local colors = {'light', 'dark'}
+  last_color = last_color % 2 + 1
+  set_colors(colors[last_color])
+end
+
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
@@ -238,17 +270,13 @@ require('lazy').setup({
     priority = 1000,
     lazy = false,
     config = function()
-      vim.opt.background = "light"
-      -- vim.opt.background = "dark"
-      require('onedark').setup {
-        -- Set a style preset. 'dark' is default.
-        style = 'light', -- dark, darker, cool, deep, warm, warmer, light
-        colors = {
-          bg0 = "#ffffff",
-          bg1 = "#f8f8f8",
-        },
+      -- set_colors(vim.opt.background._value or 'light')
+      set_colors('light')
+
+      vim.keymap.set({ 'n', 'v' }, '<leader>b', toggle_colors, { desc = '[l]ight theme' })
+      require('which-key').add {
+        { "<leader>b", desc = "toggle [b]ackground color" },
       }
-      require('onedark').load()
     end,
   },
 
@@ -314,7 +342,7 @@ require('lazy').setup({
     },
     keys  = {
       { "<leader>sf",      function() Snacks.picker.files() end,                              desc = '[s]earch [f]ile ' },
-      { '<leader>sF',      function() Snacks.picker.git_files({ submodules = true }) end,     desc = '[s]earch [F]iles in git root' },
+      { '<leader>sF',      function() Snacks.picker.files({ dirs = { find_git_root() } }) end,     desc = '[s]earch [F]iles in git root' },
       { '<leader>sh',      function() Snacks.picker.help() end,                               desc = '[s]earch [h]elp' },
       { '<leader>sw',      function() Snacks.picker.grep_word() end,                          desc = '[s]earch current [w]ord' },
       { '<leader>sW',      function() Snacks.picker.grep_word({ dirs = { find_git_root() } }) end, desc = '[s]earch current [W]ord in git root' },
