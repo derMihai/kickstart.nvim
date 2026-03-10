@@ -44,6 +44,7 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 -- vim.g.icons_enabled = false
+vim.opt.cursorline = true -- highlight current line
 
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
@@ -232,6 +233,10 @@ require('lazy').setup({
           end)
         end
 
+        local function curr_buf_dir()
+          return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
+        end
+
         -- Actions
         -- normal mode
         map('n', '<leader>hp', gs.preview_hunk, { desc = 'preview git hunk' })
@@ -246,7 +251,8 @@ require('lazy').setup({
           require('snacks.picker').git_log({
             confirm = function(picker, item)
               opendiff(picker, item, "^(%S+)")
-            end
+            end,
+            cwd = curr_buf_dir(),
           })
         end, { desc = 'git diff against [c]ommit' })
         map('n', '<leader>hb', function()
@@ -255,6 +261,7 @@ require('lazy').setup({
               opendiff(picker, item, "%S+%s+(%S+)")
             end,
             all = true,
+            cwd = curr_buf_dir(),
           })
         end, { desc = 'git diff against [b]ranch' })
 
