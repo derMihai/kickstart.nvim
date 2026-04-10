@@ -512,7 +512,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'proto', 'devicetree', },
+    ensure_installed = {
+      'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
+      'bash', 'proto', 'devicetree', 'typst',
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -671,13 +674,22 @@ vim.lsp.config('lua_ls', {
   },
   on_attach = on_attach,
 })
+
 vim.lsp.config('typos_lsp', {
   init_options = {
-    -- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
-    -- Defaults to error.
-    diagnosticSeverity = "Hint"
+    -- how typos are rendered in the editor, can be one of an error, warning, info or hint.
+    -- defaults to error.
+    diagnosticseverity = "hint"
   },
   on_attach = on_attach,
+})
+
+vim.lsp.config('tinymist', {
+    cmd = { "tinymist" },
+    filetypes = { "typst" },
+    settings = {
+        -- ...
+    }
 })
 
 vim.lsp.config("commit-lsp", {
@@ -696,10 +708,14 @@ end
 
 -- I think these should happen in this order and after vim.lsp.config()
 require('mason').setup()
+-- ensures_installed also enables
 require('mason-lspconfig').setup({
   ensure_installed = {
-    'texlab', 'ltex', 'bashls', 'clangd', 'pyright', 'lua_ls', 'typos_lsp' }
+    'texlab', 'ltex', 'bashls', 'clangd', 'pyright', 'lua_ls', 'typos_lsp', 'tinymist', }
 })
+
+-- Logs get huge, enable this only when debugging.
+vim.lsp.set_log_level("off");
 
 -- Setup neovim lua configuration
 require('neodev').setup()
