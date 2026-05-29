@@ -44,7 +44,7 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 -- vim.g.icons_enabled = false
-vim.opt.cursorline = true -- highlight current line
+-- vim.opt.cursorline = true -- highlight current line
 
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
@@ -576,7 +576,10 @@ local on_attach = function(_, bufnr)
   --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   -- end, '[W]orkspace [L]ist Folders', {})
 
-  nmap('<leader>ss', picker.lsp_workspace_symbols, '[s]earch workspace [s]ymbols', {})
+  nmap('<leader>ss', function ()
+    picker.lsp_workspace_symbols({ matcher = { fuzzy = true } })
+  end, '[s]earch workspace [s]ymbols', {})
+
   nmap("gd", picker.lsp_definitions, "[g]oto [d]efinition", {})
   nmap("gD", picker.lsp_declarations, "[g]oto [D]eclaration", {})
   nmap("gr", picker.lsp_references, "[g]oto [r]eferences", { nowait = true })
@@ -679,7 +682,7 @@ vim.lsp.config('typos_lsp', {
   init_options = {
     -- how typos are rendered in the editor, can be one of an error, warning, info or hint.
     -- defaults to error.
-    diagnosticseverity = "hint"
+    diagnosticSeverity = "hint"
   },
   on_attach = on_attach,
 })
