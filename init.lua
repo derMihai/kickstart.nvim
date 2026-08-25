@@ -512,7 +512,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
-  require('nvim-treesitter.configs').setup {
+  require('nvim-treesitter.config').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
       'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
@@ -657,6 +657,10 @@ vim.lsp.config('pyright', {
   on_attach = on_attach,
 })
 
+-- enabling build scripts by default may pose a security risk
+local enable_rust_build_scripts = vim.env.RUST_ANALYZER_BUILD_SCRIPTS == "1"
+    or vim.env.RUST_ANALYZER_BUILD_SCRIPTS == "true"
+
 vim.lsp.config('rust_analyzer', {
   on_attach = on_attach,
   cmd = { "rust-analyzer" },
@@ -664,6 +668,11 @@ vim.lsp.config('rust_analyzer', {
     ['rust-analyzer'] = {
       diagnostics = { enable = true },
       check = { command = 'clippy' },
+      cargo = {
+        buildScripts = {
+          enable = enable_rust_build_scripts,
+        },
+      },
     }
   },
 })
