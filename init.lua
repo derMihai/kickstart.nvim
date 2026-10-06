@@ -516,7 +516,7 @@ vim.defer_fn(function()
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
       'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
-      'bash', 'proto', 'devicetree', 'typst',
+      'bash', 'proto', 'devicetree', 'typst', 'zig',
     },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -706,6 +706,15 @@ vim.lsp.config('tinymist', {
     }
 })
 
+vim.lsp.config('zls', {
+    cmd = { 'zls' },
+    filetypes = { "zig", "zir" },
+    root_markers = { "build.zig", ".git" },
+    settings = {
+        -- ...
+    }
+})
+
 vim.lsp.config("commit-lsp", {
     cmd = { "commit-lsp", "run" },
     root_markers = { '.git' },
@@ -725,7 +734,7 @@ require('mason').setup()
 -- ensures_installed also enables
 require('mason-lspconfig').setup({
   ensure_installed = {
-    'texlab', 'ltex', 'bashls', 'clangd', 'pyright', 'lua_ls', 'typos_lsp', 'tinymist', }
+    'texlab', 'ltex', 'bashls', 'clangd', 'pyright', 'lua_ls', 'typos_lsp', 'tinymist', 'zls', }
 })
 
 -- Logs get huge, enable this only when debugging.
