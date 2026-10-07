@@ -364,15 +364,23 @@ require('lazy').setup({
       { "<leader>/",      function() Snacks.picker.lines( { layout = { preset = "vscode", preview = "preview" } }) end, desc = "fuzzy [/]" },
     }
   },
+  -- {
+  --   -- Highlight, edit, and navigate code
+  --   'nvim-treesitter/nvim-treesitter',
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter-textobjects',
+  --   },
+  --   build = ':TSUpdate',
+  -- },
   {
-    -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-    },
-    build = ':TSUpdate',
-  },
-
+    "romus204/tree-sitter-manager.nvim",
+    dependencies = {}, -- tree-sitter CLI must be installed system-wide
+    config = function()
+      require("tree-sitter-manager").setup({
+        auto_install = true,
+      })
+    end,
+  }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -511,35 +519,35 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
-vim.defer_fn(function()
-  require('nvim-treesitter.config').setup {
-    -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = {
-      'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
-      'bash', 'proto', 'devicetree', 'typst', 'zig',
-    },
-
-    -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
-    -- Install languages synchronously (only applied to `ensure_installed`)
-    sync_install = false,
-    -- List of parsers to ignore installing
-    ignore_install = {},
-    -- You can specify additional Treesitter modules here: -- For example: -- playground = {--enable = true,-- },
-    modules = {},
-    highlight = { enable = true },
-    indent = { enable = true },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = '<c-space>',
-        node_incremental = '<c-space>',
-        scope_incremental = '<c-s>',
-        node_decremental = '<M-space>',
-      },
-    },
-  }
-end, 0)
+-- vim.defer_fn(function()
+--   require('nvim-treesitter.config').setup {
+--     -- Add languages to be installed here that you want installed for treesitter
+--     ensure_installed = {
+--       'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
+--       'bash', 'proto', 'devicetree', 'typst', 'zig',
+--     },
+--
+--     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
+--     auto_install = false,
+--     -- Install languages synchronously (only applied to `ensure_installed`)
+--     sync_install = false,
+--     -- List of parsers to ignore installing
+--     ignore_install = {},
+--     -- You can specify additional Treesitter modules here: -- For example: -- playground = {--enable = true,-- },
+--     modules = {},
+--     highlight = { enable = true },
+--     indent = { enable = true },
+--     incremental_selection = {
+--       enable = true,
+--       keymaps = {
+--         init_selection = '<c-space>',
+--         node_incremental = '<c-space>',
+--         scope_incremental = '<c-s>',
+--         node_decremental = '<M-space>',
+--       },
+--     },
+--   }
+-- end, 0)
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
@@ -738,7 +746,7 @@ require('mason-lspconfig').setup({
 })
 
 -- Logs get huge, enable this only when debugging.
-vim.lsp.set_log_level("off");
+vim.lsp.log.set_level("OFF");
 
 -- Setup neovim lua configuration
 require('neodev').setup()
