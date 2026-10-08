@@ -108,6 +108,9 @@ local function set_colors(mode)
     -- style = 'light', -- dark, darker, cool, deep, warm, warmer, light
     style = mode,
     colors = colors,
+    code_style = {
+        comments = 'none',
+    },
   }
   require('onedark').load()
 end
