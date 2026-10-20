@@ -87,40 +87,43 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local function set_colors(mode)
-  vim.opt.background = mode
-  local colors
-  if mode == 'light' then
-    colors = {
-      bg0 = "#ffffff",
-      bg1 = "#f8f8f8",
-    }
-  else
-    colors = {
-      bg0 = "#000000",
-      bg1 = "#101010",
-    }
-  end
-
-  require('onedark').setup {
-    -- Set a style preset. 'dark' is default.
-    -- style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
-    -- style = 'light', -- dark, darker, cool, deep, warm, warmer, light
-    style = mode,
-    colors = colors,
-    code_style = {
-        comments = 'none',
-    },
-  }
-  require('onedark').load()
-end
-
-local last_color = 1;
-local function toggle_colors()
-  local colors = {'light', 'dark'}
-  last_color = last_color % 2 + 1
-  set_colors(colors[last_color])
-end
+-- local function set_colors(mode)
+--   vim.opt.background = mode
+--   local colors
+--   if mode == 'light' then
+--     colors = {
+--       bg0 = "#ffffff",
+--       bg1 = "#f8f8f8",
+--     }
+--   else
+--     colors = {
+--       bg0 = "#000000",
+--       bg1 = "#101010",
+--     }
+--   end
+--
+--   require('onedark').setup {
+--     -- Set a style preset. 'dark' is default.
+--     -- style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
+--     -- style = 'light', -- dark, darker, cool, deep, warm, warmer, light
+--     style = mode,
+--     toggle_style_key = "<leader>b",
+--     toggle_style_list = {'dark', 'light' },
+--     term_colors = false,
+--     -- colors = colors,
+--     code_style = {
+--         comments = 'none',
+--     },
+--   }
+--   require('onedark').load()
+-- end
+--
+-- local last_color = 1;
+-- local function toggle_colors()
+--   local colors = {'light', 'dark'}
+--   last_color = last_color % 2 + 1
+--   set_colors(colors[last_color])
+-- end
 
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
@@ -276,21 +279,21 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    lazy = false,
-    config = function()
-      -- set_colors(vim.opt.background._value or 'light')
-      set_colors('light')
-
-      vim.keymap.set({ 'n', 'v' }, '<leader>b', toggle_colors, { desc = '[l]ight theme' })
-      require('which-key').add {
-        { "<leader>b", desc = "toggle [b]ackground color" },
-      }
-    end,
-  },
+  -- {
+  --   -- Theme inspired by Atom
+  --   'navarasu/onedark.nvim',
+  --   priority = 1000,
+  --   lazy = false,
+  --   config = function()
+  --     -- set_colors(vim.opt.background._value or 'light')
+  --     set_colors('light')
+  --
+  --     -- vim.keymap.set({ 'n', 'v' }, '<leader>b', toggle_colors, { desc = '[l]ight theme' })
+  --     -- require('which-key').add {
+  --     --   { "<leader>b", desc = "toggle [b]ackground color" },
+  --     -- }
+  --   end,
+  -- },
 
   {
     -- Set lualine as statusline
@@ -350,6 +353,7 @@ require('lazy').setup({
           -- allow opening a buffer in a window currently occupied by terminal
           file = false,
         },
+        layout = { layout = {backdrop = false }},
       },
     },
     keys  = {
@@ -409,6 +413,8 @@ vim.o.hlsearch = true
 -- Make line numbers default
 vim.wo.number = true
 vim.wo.relativenumber = true
+
+vim.cmd "colorscheme mine_l"
 
 -- Rulers
 vim.o.cc = '80,100'
