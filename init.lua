@@ -1,43 +1,3 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-
-Kickstart.nvim is *not* a distribution.
-
-Kickstart.nvim is a template for your own configuration.
-  The goal is that you can read every line of code, top-to-bottom, understand
-  what your configuration is doing, and modify it to suit your needs.
-
-  Once you've done that, you should start exploring, configuring and tinkering to
-  explore Neovim!
-
-  If you don't know anything about Lua, I recommend taking some time to read through
-  a guide. One possible example:
-  - https://learnxinyminutes.com/docs/lua/
-
-
-  And then you can explore or search through `:help lua-guide`
-  - https://neovim.io/doc/user/lua-guide.html
-
-
-Kickstart Guide:
-
-I have left several `:help X` comments throughout the init.lua
-You should run that command and read that help section for more information.
-
-In addition, I have some `NOTE:` items throughout the file.
-These are for you, the reader to help understand what is happening. Feel free to delete
-them once you know what you're doing, but they should serve as a guide for when you
-are first encountering a few different constructs in your nvim config.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now :)
---]]
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
@@ -279,53 +239,6 @@ require('lazy').setup({
     },
   },
 
-  -- {
-  --   -- Theme inspired by Atom
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   lazy = false,
-  --   config = function()
-  --     -- set_colors(vim.opt.background._value or 'light')
-  --     set_colors('light')
-  --
-  --     -- vim.keymap.set({ 'n', 'v' }, '<leader>b', toggle_colors, { desc = '[l]ight theme' })
-  --     -- require('which-key').add {
-  --     --   { "<leader>b", desc = "toggle [b]ackground color" },
-  --     -- }
-  --   end,
-  -- },
-
-  {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        theme = 'auto',
-        component_separators = '|',
-        section_separators = '',
-      },
-      sections = {
-        lualine_a = { 'mode' },
-        lualine_b = {},
-        lualine_c = { 'filename' },
-        lualine_x = { 'filetype' },
-        lualine_y = {},
-        lualine_z = { 'location' }
-      },
-    },
-  },
-
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-    opts = {},
-  },
-
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -368,17 +281,10 @@ require('lazy').setup({
       { '<leader>sr',      function() Snacks.picker.resume() end,                             desc = '[s]earch [r]esume' },
       { '<leader><space>', function() Snacks.picker.buffers() end,                            desc = '[ ] Find existing buffers' },
       { '<leader>sP',     function() Snacks.picker.pickers() end,                            desc = '[s]earch [p]ickers' },
-      { "<leader>/",      function() Snacks.picker.lines( { layout = { preset = "vscode", preview = "preview" } }) end, desc = "fuzzy [/]" },
+      { "<leader>/",      function() Snacks.picker.lines( { layout = { preset = "vscode", preview = "preview", layout = { border = true }} }) end, desc = "fuzzy [/]" },
     }
   },
-  -- {
-  --   -- Highlight, edit, and navigate code
-  --   'nvim-treesitter/nvim-treesitter',
-  --   dependencies = {
-  --     'nvim-treesitter/nvim-treesitter-textobjects',
-  --   },
-  --   build = ':TSUpdate',
-  -- },
+
   {
     "romus204/tree-sitter-manager.nvim",
     dependencies = {}, -- tree-sitter CLI must be installed system-wide
@@ -415,6 +321,7 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 vim.cmd "colorscheme mine_l"
+vim.cmd "set winborder=rounded"
 
 -- Rulers
 vim.o.cc = '80,100'
@@ -514,50 +421,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
--- See `:help telescope.builtin`
--- vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
--- vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
--- vim.keymap.set('n', '<leader>/', function()
---   -- You can pass additional configuration to telescope to change theme, layout, etc.
---   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
---     winblend = 10,
---     previewer = false,
---   })
--- end, { desc = '[/] Fuzzily search in current buffer' })
-
--- [[ Configure Treesitter ]]
--- See `:help nvim-treesitter`
--- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
--- vim.defer_fn(function()
---   require('nvim-treesitter.config').setup {
---     -- Add languages to be installed here that you want installed for treesitter
---     ensure_installed = {
---       'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
---       'bash', 'proto', 'devicetree', 'typst', 'zig',
---     },
---
---     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
---     auto_install = false,
---     -- Install languages synchronously (only applied to `ensure_installed`)
---     sync_install = false,
---     -- List of parsers to ignore installing
---     ignore_install = {},
---     -- You can specify additional Treesitter modules here: -- For example: -- playground = {--enable = true,-- },
---     modules = {},
---     highlight = { enable = true },
---     indent = { enable = true },
---     incremental_selection = {
---       enable = true,
---       keymaps = {
---         init_selection = '<c-space>',
---         node_incremental = '<c-space>',
---         scope_incremental = '<c-s>',
---         node_decremental = '<M-space>',
---       },
---     },
---   }
--- end, 0)
-
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
@@ -587,13 +450,6 @@ local on_attach = function(_, bufnr)
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation', {})
-
-  -- Lesser used LSP functionality
-  -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder', {})
-  -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder', {})
-  -- nmap('<leader>wl', function()
-  --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  -- end, '[W]orkspace [L]ist Folders', {})
 
   nmap('<leader>ss', function ()
     picker.lsp_workspace_symbols({ matcher = { fuzzy = true } })
@@ -784,17 +640,26 @@ cmp.setup {
   },
   completion = {
     completeopt = 'menu,menuone,noinsert',
+    autocomplete = {
+        cmp.TriggerEvent.TextChanged,
+        cmp.TriggerEvent.InsertEnter,
+    },
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
-    ['<Tab>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    },
+    -- ['<C-n>'] = cmp.mapping.complete {},
+    -- ['<C-Space>'] = cmp.mapping.complete {},
+    -- ['<Tab>'] = cmp.mapping.confirm {
+    --   behavior = cmp.ConfirmBehavior.Insert,
+    --   select = true,
+    -- },
     -- Think of <c-l> as moving to the right of your snippet expansion.
     --  So if you have a snippet that's like:
     --  function $name($args)
