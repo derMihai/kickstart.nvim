@@ -20,13 +20,14 @@ local mirDarkGray1    = 'NvimDarkGray1'
 local mirDarkGray2    = 'NvimDarkGray2'
 local mirDarkGray3    = 'NvimDarkGray3'
 local mirDarkGray4    = 'NvimDarkGray4'
-local mirDarkGreen    = 'NvimDarkGreen'
+local mirDarkGreen    = '#186F00'
 local mirRed          = 'Red'
 local mirOrange       = 'Orange'
-local mirDarkRed      = 'NvimDarkRed'
-local mirDarkYellow   = 'NvimDarkYellow'
-local mirDarkCyan     = 'NvimDarkCyan'
-local mirDarkMagenta  = 'DarkMagenta'
+local mirDarkRed      = '#D42E00'
+local mirDarkYellow   = '#8F7700'
+local mirDarkOrange   = '#905B2C'
+local mirDarkCyan     = '#12917A'
+local mirDarkMagenta  = '#8D00A3'
 local mirLightRed     = 'NvimLightRed'
 local mirLightBlue    = 'NvimLightBlue'
 local mirLightGreen   = 'NvimLightGreen'
@@ -274,12 +275,12 @@ if vim.o.background == 'light' then
   -- hi('Visual',           { reverse = true })
   -- hi('WarningMsg',       { fg = 'Red',                                  ctermfg = 'DarkRed' })
   hi('Comment',             { fg = mirLightGray4,                                 ctermfg = 'LightGrey' })
-  hi('Constant',            { fg = mirDarkYellow,                              ctermfg = 'DarkRed' })
+  hi('Constant',            { fg = mirDarkOrange,                              ctermfg = 'DarkRed' })
   hi('Special',             { fg = mirBlack, bold = true,                              ctermfg = 'DarkMagenta' })
   hi('Identifier',          { fg = mirDarkRed,                             ctermfg = 'DarkCyan' })
   hi('Function',            { fg = mirDarkCyan,                             ctermfg = 'DarkGreen' })
   hi('Statement',           { fg = mirBlack,                   ctermfg = 'Brown' })
-  hi('Macro',               { fg = mirDarkMagenta,                              ctermfg = 'DarkMagenta' })
+  hi('Macro',               { fg = mirDarkCyan, bold=true,                              ctermfg = 'DarkMagenta' })
   hi('PreProc',             { fg = mirDarkGray4, bold = true,                              ctermfg = 'DarkMagenta' })
   hi('Type',                { fg = mirBlack, bold = true,                ctermfg = 'Black' })
   hi('Delimiter',           { fg = mirBlack, bold = false,                ctermfg = 'Black' })
